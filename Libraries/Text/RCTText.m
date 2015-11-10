@@ -25,7 +25,7 @@
   if ((self = [super initWithFrame:frame])) {
     _textStorage = [NSTextStorage new];
     _reactSubviews = [NSMutableArray array];
-
+    
     self.isAccessibilityElement = YES;
     self.accessibilityTraits |= UIAccessibilityTraitStaticText;
 
@@ -67,21 +67,14 @@
   return _reactSubviews;
 }
 
-- (void)setTextStorage:(NSTextStorage *)textStorage
-{
-  _textStorage = textStorage;
-  [self setNeedsDisplay];
-}
-
 - (void)drawRect:(CGRect)rect
 {
-  NSLayoutManager *layoutManager = _textStorage.layoutManagers.firstObject;
-  NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
-  CGRect textFrame = UIEdgeInsetsInsetRect(self.bounds, _contentInset);
-  NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
+  NSLayoutManager *layoutManager = [_textStorage.layoutManagers firstObject];
+  NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
 
-  [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:textFrame.origin];
-  [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:textFrame.origin];
+  NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
+  [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:self.textFrame.origin];
+  [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:self.textFrame.origin];
 
   __block UIBezierPath *highlightPath = nil;
   NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
@@ -148,6 +141,7 @@
     [self setNeedsDisplay];
   }
 }
+
 
 #pragma mark - Accessibility
 

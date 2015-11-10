@@ -10,6 +10,14 @@
 #import "RCTShadowView.h"
 #import "RCTTextDecorationLineType.h"
 
+typedef NS_ENUM(NSInteger, RCTSizeComparison)
+{
+  RCTSizeTooLarge,
+  RCTSizeTooSmall,
+  RCTSizeWithinRange,
+};
+
+
 extern NSString *const RCTIsHighlightedAttributeName;
 extern NSString *const RCTReactTagAttributeName;
 
@@ -33,6 +41,8 @@ extern NSString *const RCTReactTagAttributeName;
 @property (nonatomic, assign) CGFloat fontSizeMultiplier;
 @property (nonatomic, assign) BOOL allowFontScaling;
 @property (nonatomic, assign) CGFloat opacity;
+@property (nonatomic, assign) BOOL adjustsFontSizeToFit;
+@property (nonatomic, assign) CGFloat minimumFontScale;
 
 - (void)recomputeText;
 
