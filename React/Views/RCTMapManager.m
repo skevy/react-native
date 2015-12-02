@@ -76,14 +76,27 @@ RCT_CUSTOM_VIEW_PROPERTY(region, MKCoordinateRegion, RCTMap)
 
 - (MKAnnotationView *)mapView:(__unused MKMapView *)mapView viewForAnnotation:(RCTPointAnnotation *)annotation
 {
+  BOOL isTitleEmpty = NO;
+
   if (![annotation isKindOfClass:[RCTPointAnnotation class]]) {
     return nil;
+  }
+
+  // Set annotation title to handle annotation press events, and hide it with annotationView.canShowCallout = false
+  if (!annotation.title) {
+    annotation.title = @"NOTITLE";
+    isTitleEmpty = YES;
   }
 
   MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"RCTAnnotation"];
   annotationView.image = annotation.image;
 
-  annotationView.canShowCallout = true;
+  if (isTitleEmpty) {
+    annotationView.canShowCallout = false;
+    annotation.title = nil;
+  } else {
+    annotationView.canShowCallout = true;
+  }
 
   annotationView.leftCalloutAccessoryView = nil;
   if (annotation.hasLeftCallout) {
