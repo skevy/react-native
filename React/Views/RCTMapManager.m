@@ -127,8 +127,16 @@ RCT_CUSTOM_VIEW_PROPERTY(region, MKCoordinateRegion, RCTMap)
 
 - (MKAnnotationView *)mapView:(__unused MKMapView *)mapView viewForAnnotation:(RCTMapAnnotation *)annotation
 {
+  BOOL isTitleEmpty = NO;
+
   if (![annotation isKindOfClass:[RCTMapAnnotation class]]) {
     return nil;
+  }
+
+  // Set annotation title to handle annotation press events, and hide it with annotationView.canShowCallout = false
+  if (!annotation.title) {
+    annotation.title = @"NOTITLE";
+    isTitleEmpty = YES;
   }
 
   MKAnnotationView *annotationView;
@@ -177,7 +185,13 @@ RCT_CUSTOM_VIEW_PROPERTY(region, MKCoordinateRegion, RCTMap)
       ((MKPinAnnotationView *)annotationView).pinTintColor = annotation.tintColor ?: [MKPinAnnotationView redPinColor];
     }
   }
-  annotationView.canShowCallout = true;
+
+  if (isTitleEmpty) {
+    annotationView.canShowCallout = false;
+    annotation.title = nil;
+  } else {
+    annotationView.canShowCallout = true;
+  }
 
   annotationView.leftCalloutAccessoryView = nil;
   if (annotation.hasLeftCallout) {
