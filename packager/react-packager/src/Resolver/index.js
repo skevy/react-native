@@ -81,7 +81,6 @@ class Resolver {
           (opts.blacklistRE && opts.blacklistRE.test(filepath));
       },
       providesModuleNodeModules: [
-        'fbjs',
         'react',
         'react-native',
         // Parse requires AsyncStorage. They will
