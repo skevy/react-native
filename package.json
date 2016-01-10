@@ -90,6 +90,7 @@
     "packager",
     "cli.js",
     "local-cli",
+    "npm-shrinkwrap.json",
     "init.sh",
     "LICENSE",
     "PATENTS",
